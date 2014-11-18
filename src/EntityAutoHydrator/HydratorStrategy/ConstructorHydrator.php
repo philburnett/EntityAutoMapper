@@ -1,8 +1,8 @@
 <?php
 
-namespace ArrayMapper\Hydrator;
+namespace EntityAutoHydrator\HydratorStrategy;
 
-use ArrayMapper\ArrayToObjectHydratorInterface;
+use EntityAutoHydrator\HydratorStrategyInterface;
 use InvalidArgumentException;
 use ReflectionClass;
 
@@ -11,14 +11,14 @@ use ReflectionClass;
  *
  * @author Phil Burnett <phil.burnett@valtech.co.uk>
  */
-class ConstructorHydratorStrategy implements ArrayToObjectHydratorInterface
+class ConstructorHydrator implements HydratorStrategyInterface
 {
     /**
      * @param array $arrayToMap
-     * @param string $canonicalClassName
-     * @return mixed
+     * @param $canonicalClassName
+     * @return object
      */
-    public function mapArrayToClass(array $arrayToMap, $canonicalClassName)
+    public function hydrate(array $arrayToMap, $canonicalClassName)
     {
         if (!class_exists($canonicalClassName)) {
             throw new InvalidArgumentException(
@@ -29,26 +29,24 @@ class ConstructorHydratorStrategy implements ArrayToObjectHydratorInterface
         $reflectionClass = new ReflectionClass($canonicalClassName);
 
         $constructorArguments = $reflectionClass->getConstructor()->getParameters();
-        $hydratedConstructorArguments = [];
+        $hydratedArguments = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $constructorName = $constructorArgument->getName();
+            $constructorName  = $constructorArgument->getName();
             $constructorClass = $constructorArgument->getClass();
 
-            $hydratedConstructorArguments[$constructorName] = $arrayToMap[$constructorName];
+            $hydratedArguments[$constructorName] = $arrayToMap[$constructorName];
 
             if (!is_null($constructorClass)) {
-                $hydratedConstructorArguments[$constructorName]
-                    = $this->mapArrayToClass(
-                    $arrayToMap[$constructorName],
-                    $constructorClass->getName()
-                );
-
+                $hydratedArguments[$constructorName]
+                    = $this->hydrate(
+                        $arrayToMap[$constructorName],
+                        $constructorClass->getName()
+                    );
             }
         }
 
-        $mappedObject = $reflectionClass->newInstanceArgs($hydratedConstructorArguments);
+        $mappedObject = $reflectionClass->newInstanceArgs($hydratedArguments);
         return $mappedObject;
     }
 }
-

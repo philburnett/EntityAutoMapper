@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitTest\ArrayMapper;
+namespace UnitTest\EntityAutoHydrator;
 
 /**
  * Class MapperTestClass
