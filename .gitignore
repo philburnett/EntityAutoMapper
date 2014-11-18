@@ -1,0 +1,5 @@
+/vendor
+.idea
+coverage-report/
+.DS_Store
+composer.phar

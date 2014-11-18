@@ -1,0 +1,15 @@
+{
+    "name": "phil-burnett/array-mapper",
+    "description": "Maps keyed arrays into objects",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Phil Burnett",
+            "email": "philburnett@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "4.3.5"
+    }
+}
