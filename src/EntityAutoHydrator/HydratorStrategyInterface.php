@@ -1,6 +1,6 @@
 <?php
 
-namespace ArrayMapper;
+namespace EntityAutoHydrator;
 
 /**
  * Interface ArrayObjectMappingInterface

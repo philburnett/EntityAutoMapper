@@ -1,15 +1,15 @@
 <?php
 
-namespace UnitTest\Hydrator\Hydrator;
+namespace UnitTest\HydratorStrategy\HydratorStrategy;
 
-use ArrayMapper\Hydrator\ConstructorHydrator;
+use EntityAutoHydrator\HydratorStrategy\ConstructorHydrator;
 use PHPUnit_Framework_TestCase;
-use UnitTest\ArrayMapper\ATestClass;
+use UnitTest\EntityAutoHydrator\ATestClass;
 
 /**
  * Class ConstructorHydratorTest
  *
- * @package UnitTest\Hydrator\Hydrator
+ * @package UnitTest\HydratorStrategy\HydratorStrategy
  */
 class ConstructorHydratorTest extends PHPUnit_Framework_TestCase
 {
@@ -31,25 +31,25 @@ class ConstructorHydratorTest extends PHPUnit_Framework_TestCase
     {
         $cms        = new ConstructorHydrator();
         /** @var ATestClass $testObject */
-        $testObject = $cms->mapArrayToClass($this->testArray, 'UnitTest\ArrayMapper\ATestClass');
+        $testObject = $cms->hydrate($this->testArray, 'UnitTest\EntityAutoHydrator\ATestClass');
         $testArray  = $testObject->getArray();
 
-        $this->assertInstanceOf('UnitTest\ArrayMapper\ATestClass', $testObject);
+        $this->assertInstanceOf('UnitTest\EntityAutoHydrator\ATestClass', $testObject);
         $this->assertEquals('foo', $testObject->getString());
         $this->assertArrayHasKey('stringOne', $testArray);
         $this->assertArrayHasKey('stringTwo', $testArray);
         $this->assertEquals('bar', $testArray['stringOne']);
         $this->assertEquals('baz', $testArray['stringTwo']);
-        $this->assertInstanceOf('UnitTest\ArrayMapper\AnotherTestClass', $testObject->getAnotherClass());
+        $this->assertInstanceOf('UnitTest\EntityAutoHydrator\AnotherTestClass', $testObject->getAnotherClass());
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $canonicalClassName (UnitTest\ArrayMapper\BTestClass) is not a valid class name
+     * @expectedExceptionMessage $canonicalClassName (UnitTest\EntityAutoHydrator\BTestClass) is not a valid class name
      */
     public function testThrowExceptionInvalidClassName()
     {
         $cms        = new ConstructorHydrator();
-        $cms->mapArrayToClass($this->testArray, 'UnitTest\ArrayMapper\BTestClass');
+        $cms->hydrate($this->testArray, 'UnitTest\EntityAutoHydrator\BTestClass');
     }
 }
