@@ -2,9 +2,11 @@
 
 namespace EntityAutoHydrator\HydratorStrategy;
 
+use EntityAutoHydrator\Exception\MissingArgumentException;
 use EntityAutoHydrator\HydratorStrategyInterface;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * Class ConstructorInjectionStrategy
@@ -15,38 +17,73 @@ class ConstructorHydrator implements HydratorStrategyInterface
 {
     /**
      * @param array $arrayToMap
-     * @param $canonicalClassName
+     * @param $className
      * @return object
      */
-    public function hydrate(array $arrayToMap, $canonicalClassName)
+    public function hydrate(array $arrayToMap, $className)
     {
-        if (!class_exists($canonicalClassName)) {
+        if (!class_exists($className)) {
             throw new InvalidArgumentException(
-                '$canonicalClassName (' . $canonicalClassName . ') is not a valid class name'
+                '$className (' . $className . ') is not a valid class name'
             );
         }
 
-        $reflectionClass = new ReflectionClass($canonicalClassName);
+        $reflectionClass = new ReflectionClass($className);
 
         $constructorArguments = $reflectionClass->getConstructor()->getParameters();
         $hydratedArguments = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $constructorName  = $constructorArgument->getName();
-            $constructorClass = $constructorArgument->getClass();
 
-            $hydratedArguments[$constructorName] = $arrayToMap[$constructorName];
-
-            if (!is_null($constructorClass)) {
-                $hydratedArguments[$constructorName]
-                    = $this->hydrate(
-                        $arrayToMap[$constructorName],
-                        $constructorClass->getName()
-                    );
-            }
+            $argName  = $constructorArgument->getName();
+            $hydratedArguments[$argName] = $this->getArgument($constructorArgument, $arrayToMap);
         }
 
         $mappedObject = $reflectionClass->newInstanceArgs($hydratedArguments);
         return $mappedObject;
+    }
+
+    /**
+     * @param ReflectionParameter $constructorArgument
+     * @param $arrayToMap
+     * @return object
+     *
+     * @throws MissingArgumentException
+     */
+    private function getArgument(ReflectionParameter $constructorArgument, $arrayToMap)
+    {
+        $constructorClass = $constructorArgument->getClass();
+
+        $value = $this->findArrayValue($constructorArgument, $arrayToMap);
+
+        if (!is_null($constructorClass)) {
+            $value = $this->hydrate(
+                $arrayToMap,
+                $constructorClass->getName()
+            );
+        }
+        return $value;
+    }
+
+    /**
+     * @param ReflectionParameter $constructorArgument
+     * @param array $arrayToSearch
+     * @throws MissingArgumentException
+     */
+    private function findArrayValue(ReflectionParameter $constructorArgument, array $arrayToSearch)
+    {
+        $valueName = $constructorArgument->getName();
+
+        if (array_key_exists($valueName, $arrayToSearch)) {
+            return $arrayToSearch[$valueName];
+        }
+
+        if ($constructorArgument->isOptional()) {
+            return $constructorArgument->getDefaultValue();
+        }
+
+        throw new MissingArgumentException(
+            'Could not locate suitable array key for constructor argument $(' . $valueName . ')'
+        );
     }
 }

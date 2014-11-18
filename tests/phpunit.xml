@@ -7,16 +7,16 @@
          timeoutForLargeTests="600" strict="true"
         >
     <testsuites>
-        <testsuite name="Phils Mapper">
+        <testsuite name="Entity Auto Mapper">
             <directory suffix="Test.php">./UnitTest</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">../module</directory>
+            <directory suffix=".php">../src</directory>
         </whitelist>
         <blacklist>
-            <directory>../test</directory>
+            <directory>../tests</directory>
         </blacklist>
     </filter>
     <logging>

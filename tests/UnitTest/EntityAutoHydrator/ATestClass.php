@@ -24,14 +24,21 @@ class ATestClass
      */
     private $anotherClass;
 
+    /**
+     * @var AnotherTestClass
+     */
+    private $optionalClass;
+
     public function __construct(
         $string,
         array $array,
-        AnotherTestClass $anotherClass
+        AnotherTestClass $anotherClass,
+        AnotherTestClass $optionalClass = null
     ) {
-        $this->string       = $string;
-        $this->array        = $array;
-        $this->anotherClass = $anotherClass;
+        $this->string        = $string;
+        $this->array         = $array;
+        $this->anotherClass  = $anotherClass;
+        $this->optionalClass = $optionalClass;
     }
 
     /**
