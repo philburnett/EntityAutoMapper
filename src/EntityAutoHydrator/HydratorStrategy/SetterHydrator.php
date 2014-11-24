@@ -7,7 +7,7 @@ use EntityAutoHydrator\HydratorStrategyInterface;
 /**
  * Class SetterHydrator
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 class SetterHydrator implements HydratorStrategyInterface
 {
@@ -17,6 +17,13 @@ class SetterHydrator implements HydratorStrategyInterface
      * @return mixed
      */
     public function hydrate(array $arrayToMap, $canonicalClassName)
+    {
+        // @todo
+        $setterMap = $this->getSetters($arrayToMap);
+    }
+
+
+    private function getSetters(array $arrayToMap)
     {
 
     }

@@ -5,7 +5,7 @@ namespace ArrayMapper;
 /**
  * Class StringConversionStrategyInterface
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 interface StringConversionStrategyInterface
 {

@@ -7,7 +7,7 @@ use Exception;
 /**
  * Class MIssingArgumentException
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 class MissingArgumentException extends Exception
 {

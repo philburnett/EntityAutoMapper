@@ -11,7 +11,7 @@ use ReflectionParameter;
 /**
  * Class ConstructorInjectionStrategy
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 class ConstructorHydrator implements HydratorStrategyInterface
 {
@@ -24,7 +24,7 @@ class ConstructorHydrator implements HydratorStrategyInterface
     {
         if (!class_exists($className)) {
             throw new InvalidArgumentException(
-                '$className (' . $className . ') is not a valid class name'
+                '$className (' . $className . ') cannot be found'
             );
         }
 
