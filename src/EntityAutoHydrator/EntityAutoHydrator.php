@@ -5,7 +5,7 @@ namespace ArrayMapper;
 /**
  * Class ArrayMapper
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 class EntityAutoHydrator
 {

@@ -5,7 +5,7 @@ namespace EntityAutoHydrator;
 /**
  * Interface ArrayObjectMappingInterface
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 interface HydratorStrategyInterface
 {

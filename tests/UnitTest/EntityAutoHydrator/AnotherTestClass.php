@@ -5,7 +5,7 @@ namespace UnitTest\EntityAutoHydrator;
 /**
  * Class MapperTestClass
  *
- * @author Phil Burnett <phil.burnett@valtech.co.uk>
+ * @author Phil Burnett
  */
 class AnotherTestClass
 {
